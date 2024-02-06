@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
-const stockRoutes = require('./src/api/stockRoutes'); // Adjust the path as necessary
+const stockRoutes = require('./api/stockRoutes'); // Adjust the path as necessary
 
 const app = express();
 
