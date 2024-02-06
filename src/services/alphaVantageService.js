@@ -30,7 +30,7 @@ const getWeeklyTimeSeries = async (symbol) => {
 
     try {
         const response = await axios.get(url);
-        return response.data['Weekly Time Series'];
+        return response.data;
     } catch (error) {
         console.error(`Error fetching weekly data from Alpha Vantage for ${symbol}: ${error}`);
         return null;

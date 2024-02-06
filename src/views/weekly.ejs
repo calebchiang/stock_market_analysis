@@ -7,6 +7,28 @@
 </head>
 <body>
 <h1>Enter a Stock Symbol to Get Weekly Data</h1>
+<form action="/stocks/weekly" method="get">
+    <label for="symbol">Stock Symbol:</label>
+    <input type="text" id="symbol" name="symbol" required>
+    <button type="submit">Get Data</button>
+</form>
 
+<% if (weeklyData && weeklyData.length > 0) { %>
+    <ul>
+        <% weeklyData.forEach(function(week) { %>
+            <li>
+                <strong>Date:</strong> <%= week.date %><br>
+                <strong>Open:</strong> <%= week.open %><br>
+                <strong>High:</strong> <%= week.high %><br>
+                <strong>Low:</strong> <%= week.low %><br>
+                <strong>Close:</strong> <%= week.close %><br>
+                <strong>Volume:</strong> <%= week.volume %><br>
+                <strong>Percentage Change:</strong> <%= week.percentageChange %>%
+            </li>
+        <% }); %>
+    </ul>
+<% } else if (symbol) { %>
+    <p>No weekly data available for the symbol "<%= symbol %>". Please try another symbol.</p>
+<% } %>
 </body>
 </html>
