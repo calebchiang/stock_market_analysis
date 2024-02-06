@@ -1,10 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // Import the path module
 require('dotenv').config();
 
 const stockRoutes = require('./api/stockRoutes'); // Adjust the path as necessary
 
 const app = express();
+
+// Set the view engine to EJS
+app.set('view engine', 'ejs');
+
+// Correctly set the views directory
+// This assumes app.js is inside the src directory
+app.set('views', path.join(__dirname, 'views'));
+console.log('Resolved views directory:', path.join(__dirname, 'views'));
 
 app.use(cors());
 app.use(express.json()); // Middleware for parsing JSON bodies
