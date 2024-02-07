@@ -4,19 +4,18 @@ const path = require('path');
 const stockRoutes = require('./api/stockRoutes'); // Ensure this path is correct
 
 
-const app = express();
+const app = express() // Creates instance of an Express application
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); // Set EJS as template engine for this application
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 // Directly use stockRoutes for handling '/stocks/weekly' without '/api/stocks' prefix
 app.use('/stocks', stockRoutes);
 
-// If you have other routes that should be prefixed with '/api/stocks', define them separately
-// app.use('/api/stocks', apiStockRoutes); // Hypothetical separate router for API-prefixed routes
 
 app.get('/', (req, res) => res.send('Hello from the server!'));
 

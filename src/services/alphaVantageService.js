@@ -43,13 +43,39 @@ const getMonthlyTimeSeries = async (symbol) => {
 
     try {
         const response = await axios.get(url);
-        // Assuming you want the whole monthly time series data
-        const monthlyData = response.data['Monthly Time Series'];
-        return monthlyData;
+        const data = response.data;
+
+        // Check if the 'Monthly Time Series' key exists in the response
+        if (data && Object.keys(data).length > 0 && data['Monthly Time Series']) {
+            const monthlyData = Object.entries(data['Monthly Time Series']).map(([date, details]) => ({
+                date,
+                open: details['1. open'],
+                high: details['2. high'],
+                low: details['3. low'],
+                close: details['4. close'],
+                volume: details['5. volume'],
+                percentageChange: calculatePercentageChange(details).toFixed(2),
+            }));
+
+            // Notice the change here: directly return the array without wrapping in an object
+            return monthlyData;
+        } else {
+            console.log("No 'Monthly Time Series' data found or data is empty.");
+            return null;
+        }
     } catch (error) {
         console.error(`Error fetching monthly data from Alpha Vantage for ${symbol}: ${error}`);
         return null;
     }
 };
+
+
+// Helper function to calculate the percentage change
+function calculatePercentageChange(details) {
+    const open = parseFloat(details['1. open']);
+    const close = parseFloat(details['4. close']);
+    return ((close - open) / open) * 100;
+}
+
 
 module.exports = { getLatestPrice, getWeeklyTimeSeries, getMonthlyTimeSeries };
