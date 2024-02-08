@@ -1,3 +1,16 @@
+/**
+ * This module provides functions to retrieve stock data from the Alpha Vantage API.
+ * It includes methods to fetch the latest price, weekly data, and monthly data for a
+ * specified stock symbol. Utilizing the Axios library, it sends requests to the Alpha
+ * Vantage API with the provided API key stored in a secure environment variable. The
+ * module handles responses gracefully and formats the data for consumption by the
+ * application. Additionally, it includes a helper function to calculate the percentage change
+ * in stock prices. Overall, this module facilitates seamless integration of financial data
+ * from Alpha Vantage into the web application.
+ * @author: Caleb Chiang
+ * @version:1.0
+ */
+
 const axios = require('axios');
 require('dotenv').config();
 

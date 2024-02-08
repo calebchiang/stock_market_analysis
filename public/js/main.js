@@ -1,3 +1,11 @@
+/**
+ * This JavaScript file orchestrates authentication processes and stock data
+ * retrieval for a web application. It enables users to sign up and sign in securely,
+ * handles user input validation, and provides seamless access to the latest stock prices,
+ * weekly, and monthly data for specified stock symbols.
+ * @author Caleb Chiang
+ * @version 1.0.0
+ */
 document.addEventListener('DOMContentLoaded', function() {
     // Authentication related elements and events
     const triggerSignInButton = document.getElementById('triggerSignIn');
@@ -130,8 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const searchButton = document.getElementById('searchButton');
     const weeklyButton = document.getElementById('weeklyButton');
@@ -142,8 +148,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initially disable weekly and monthly buttons
     weeklyButton.disabled = true;
     monthlyButton.disabled = true;
-
-
 
     // Search button click event
     searchButton.addEventListener('click', function () {
