@@ -1,3 +1,137 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Authentication related elements and events
+    const triggerSignInButton = document.getElementById('triggerSignIn');
+    const authFormContainer = document.getElementById('authFormContainer');
+    const signInArea = document.getElementById('signInArea');
+    const signUpArea = document.getElementById('signUpArea');
+    const switchToSignUp = document.getElementById('switchToSignUp');
+    const switchToSignIn = document.getElementById('switchToSignIn');
+    const signInButton = document.getElementById('signInButton'); // Ensure this exists in your HTML
+    const signInEmail = document.getElementById('signInEmail');
+    const signInPassword = document.getElementById('signInPassword');
+
+    const signUpButton = document.getElementById('signUpButton'); // Make sure this ID matches your HTML
+    const signUpEmail = document.getElementById('signUpEmail');
+    const signUpPassword = document.getElementById('signUpPassword');
+    const signUpUsername = document.getElementById('signUpUsername'); // If you're collecting usernames
+
+    signUpButton.addEventListener('click', function() {
+        const email = signUpEmail.value.trim();
+        const password = signUpPassword.value;
+        const username = signUpUsername.value.trim(); // If you're collecting usernames
+        if (email && password && username) { // Include username in this check if you're collecting it
+            signUpUser(email, password, username);
+        } else {
+            alert('Please enter email, password, and username.');
+        }
+    });
+
+    function signUpUser(email, password, username) {
+        // Show loading indicator
+        document.getElementById('loadingIndicator').style.display = 'block';
+
+        fetch('/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                username: username, // Include this if you're collecting usernames
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+
+                if (data.message === 'User created successfully!') {
+                    alert('Successfully signed up! Please sign in.');
+                    toggleAuthForms(); // Switch back to the sign-in form
+                } else {
+                    alert('Sign up failed. ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+            });
+    }
+    // Function to toggle visibility of sign-in and sign-up forms
+    function toggleAuthForms(showSignIn = true) {
+        authFormContainer.style.display = 'block';
+        signInArea.style.display = showSignIn ? 'block' : 'none';
+        signUpArea.style.display = showSignIn ? 'none' : 'block';
+    }
+
+    triggerSignInButton.addEventListener('click', () => toggleAuthForms());
+    switchToSignUp.addEventListener('click', () => toggleAuthForms(false));
+    switchToSignIn.addEventListener('click', () => toggleAuthForms());
+
+
+
+    signInButton.addEventListener('click', function () {
+        const email = signInEmail.value.trim();
+        const password = signInPassword.value;
+        if (email && password) {
+            signInUser(email, password);
+        } else {
+            alert('Please enter both email and password.');
+        }
+    });
+
+    function signInUser(email, password) {
+        // Show loading indicator
+        document.getElementById('loadingIndicator').style.display = 'block';
+
+        fetch('/auth/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+
+                if (data.message === 'Login successful!') {
+                    // Update UI or redirect as needed
+                    alert('Successfully signed in!');
+                    // Hide the authentication form container
+                    document.getElementById('authFormContainer').style.display = 'none';
+                    // Hide the authentication form container
+                    document.getElementById('triggerSignIn').style.display = 'none';
+                    // Display the welcome message
+                    const welcomeMessage = document.createElement('div');
+                    welcomeMessage.id = 'welcomeMessage';
+                    welcomeMessage.innerHTML = `<h2>Welcome ${data.username}!</h2>`; // Adjust this line if the property name for username is different
+                    document.body.insertBefore(welcomeMessage, document.body.firstChild);
+
+                } else {
+                    alert('Sign in failed. Please check your credentials.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+            });
+
+
+    }
+
+
+});
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchButton = document.getElementById('searchButton');
     const weeklyButton = document.getElementById('weeklyButton');
@@ -8,6 +142,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initially disable weekly and monthly buttons
     weeklyButton.disabled = true;
     monthlyButton.disabled = true;
+
+
 
     // Search button click event
     searchButton.addEventListener('click', function () {
