@@ -19,8 +19,20 @@ The Stock Portfolio Web App is a Node.js application that allows users to view r
 
 ### Installation
 
+### Dependencies 
+- axios
+- cors
+- dotenv
+- ejs
+- express
+- mongodb
+- mongoose
+
 1. **Clone the repository**
 
 ```bash
 git clone https://github.com/yourusername/stock_market_analysis.git
 cd stock_market_analysis
+
+
+

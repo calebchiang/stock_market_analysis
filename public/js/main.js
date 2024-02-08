@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // General function to fetch data
     function fetchData(url, dataType) {
+        // Show loading indicator
+        document.getElementById('loadingIndicator').style.display = 'block';
+
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -46,6 +49,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+
                 displayData(data, dataType);
                 // Enable weekly and monthly buttons after successful latest data fetch
                 if (dataType === 'Latest Price') {
@@ -55,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                // Hide loading indicator
+                document.getElementById('loadingIndicator').style.display = 'none';
+
                 dataDisplay.textContent = `Failed to load ${dataType}.`;
             });
     }
