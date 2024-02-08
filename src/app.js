@@ -1,11 +1,7 @@
 /**
  * This Express.js application file configures middleware and routes for a web server.
  * It establishes connections to MongoDB for stock data storage, sets up CORS handling for
- * cross-origin requests, and serves static files from the 'public' directory. The application
- * utilizes routes defined in separate modules for stock data and user authentication. Additionally,
- * it sets the view engine to EJS for rendering dynamic views and listens on a specified port for
- * incoming HTTP requests. Overall, this file orchestrates the setup and operation of the web server,
- * facilitating the handling of stock data and user authentication within the application.
+ * cross-origin requests, and serves static files from the 'public' directory.
  * @author: Caleb Chiang
  * @version: 1.0.0
  *

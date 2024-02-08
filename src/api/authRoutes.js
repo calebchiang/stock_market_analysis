@@ -2,10 +2,7 @@
  * This Express.js router file manages sign-up and sign-in
  * routes for user authentication. It securely handles user registration
  * by hashing passwords using bcrypt, and facilitates user authentication by
- * comparing stored hashed passwords with the provided credentials. The routes
- * interact with a User model to create new user accounts and authenticate
- * existing users, providing robust authentication functionality for
- * the web application.
+ * comparing stored hashed passwords with the provided credentials.
  * @author Caleb Chiang
  * @version 1.0.0
  */

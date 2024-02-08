@@ -3,8 +3,6 @@
  * from the Alpha Vantage API. It includes routes to fetch the latest price,
  * weekly data, and monthly data for specified stock symbols. The routes handle
  * error responses and return JSON-formatted data to the client.
- * Utilizing the Alpha Vantage service, this file enables seamless integration
- * of financial data into the web application.
  * @author Caleb Chiang
  * @version 1.0
  *
