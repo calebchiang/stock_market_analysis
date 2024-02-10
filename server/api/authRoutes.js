@@ -15,14 +15,20 @@ const router = express.Router();
 // Sign-up route
 router.post('/signup', async (req, res) => {
     try {
+        console.log("Signup request body:", req.body); // Log incoming data
         const { username, email, password } = req.body;
-        const user = new User({ username, email, password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        // Additional logs can be placed here to confirm each step's success
+        const user = new User({ username, email, password: hashedPassword });
         await user.save();
+        console.log("User created successfully"); // Confirm user creation
         res.status(201).json({ message: 'User created successfully!' });
     } catch (error) {
+        console.error("Signup error:", error); // Log any errors
         res.status(500).json({ message: 'Error registering new user.' });
     }
 });
+
 
 // Sign-in route
 router.post('/signin', async (req, res) => {

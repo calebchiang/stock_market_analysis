@@ -23,17 +23,18 @@ mongoose.connect('mongodb://localhost/stockData')
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+// Correct path for serving static files from outside the server directory
+app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
+
 app.use('/stocks', stockRoutes);
 app.use('/auth', authRoutes);
-
-
-
 app.set('view engine', 'ejs'); // Set EJS as template engine for this application
 app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => res.send('Hello from the server!'));
-
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'));
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
