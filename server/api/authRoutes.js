@@ -17,9 +17,9 @@ router.post('/signup', async (req, res) => {
     try {
         console.log("Signup request body:", req.body); // Log incoming data
         const { username, email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        // Additional logs can be placed here to confirm each step's success
-        const user = new User({ username, email, password: hashedPassword });
+
+        // The password will be hashed automatically by the pre-save middleware in the User model
+        const user = new User({ username, email, password });
         await user.save();
         console.log("User created successfully"); // Confirm user creation
         res.status(201).json({ message: 'User created successfully!' });
@@ -34,8 +34,16 @@ router.post('/signup', async (req, res) => {
 router.post('/signin', async (req, res) => {
     try {
         const { email, password } = req.body;
+
         const user = await User.findOne({ email });
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
