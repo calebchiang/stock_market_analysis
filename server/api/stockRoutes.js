@@ -27,32 +27,20 @@ router.get('/latest/:symbol', async (req, res) => {
     }
 });
 
-// Route for weekly price, adjusted to return JSON
-router.get('/weekly', async (req, res) => {
-    const symbol = req.query.symbol ? req.query.symbol.toUpperCase() : '';
+// Adjusted route for weekly data to use URL parameters
+router.get('/weekly/:symbol', async (req, res) => {
+    const symbol = req.params.symbol.toUpperCase(); // Get the symbol from URL parameters and convert to uppercase
     try {
-        if (symbol) {
-            const data = await getWeeklyTimeSeries(symbol);
-            if (data && Object.keys(data).length > 0 && data['Weekly Time Series']) {
-                const weeklyData = Object.entries(data['Weekly Time Series']).map(([date, details]) => ({
-                    date,
-                    open: details['1. open'],
-                    high: details['2. high'],
-                    low: details['3. low'],
-                    close: details['4. close'],
-                    volume: details['5. volume'],
-                    percentageChange: (((details['4. close'] - details['1. open']) / details['1. open']) * 100).toFixed(2),
-                }));
-                res.json({ symbol: symbol, weeklyData: weeklyData });
-            } else {
-                res.status(404).json({ error: 'No weekly data found' });
-            }
+        const latestData = await getWeeklyTimeSeries(symbol); // This now returns only the latest entry
+        if (latestData) {
+            console.log({ symbol: symbol, latestData: latestData });
+            res.json({ symbol: symbol, latestData: latestData }); // Return the symbol and its latest weekly data in JSON format
         } else {
-            res.status(400).json({ error: 'Symbol query parameter is required' });
+            res.status(404).json({ error: 'No weekly data found for ' + symbol }); // Handle case where no data is found
         }
     } catch (error) {
         console.error(`Error fetching weekly data for ${symbol}: ${error}`);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' }); // Handle any errors that occur during the request
     }
 });
 

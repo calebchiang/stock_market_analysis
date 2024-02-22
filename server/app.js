@@ -13,7 +13,7 @@ const path = require('path');
 const stockRoutes = require('./api/stockRoutes'); // Ensure this path is correct
 const mongoose = require('mongoose');
 const authRoutes = require('./api/authRoutes');
-
+const userRoutes = require('./api/userRoutes');
 
 const app = express() // Creates instance of an Express application
 
@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
 app.use('/stocks', stockRoutes);
 app.use('/auth', authRoutes);
+app.use('/api/user', userRoutes);
 app.set('view engine', 'ejs'); // Set EJS as template engine for this application
 app.set('views', path.join(__dirname, 'views'));
 

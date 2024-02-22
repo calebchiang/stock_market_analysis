@@ -17,6 +17,7 @@ const getLatestPrice = async (symbol) => {
 
     try {
         const response = await axios.get(url);
+        console.log("Raw response for getLatestPrice:", response.data);
         const data = response.data;
         // Extract the latest date
         const latestDate = Object.keys(data['Time Series (Daily)'])[0];
@@ -32,13 +33,39 @@ const getLatestPrice = async (symbol) => {
     }
 };
 
-// Returns the weekly price of a stock
 const getWeeklyTimeSeries = async (symbol) => {
     const url = `https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
 
     try {
         const response = await axios.get(url);
-        return response.data;
+        const data = response.data;
+        if (data && Object.keys(data).length > 0 && data['Weekly Time Series']) {
+            const weeklyTimeSeries = data['Weekly Time Series'];
+            // Extract the keys (dates) and sort them to ensure the latest date is first
+            const sortedDates = Object.keys(weeklyTimeSeries).sort((a, b) => new Date(b) - new Date(a));
+            const latestDate = sortedDates[0];
+            const latestEntry = weeklyTimeSeries[latestDate];
+
+            // Calculate the percentage change for the latest entry
+            const percentageChange = calculatePercentageChange(latestEntry);
+
+            // Create the structure for the latest entry including the percentage change
+            const latestData = {
+                date: latestDate,
+                open: latestEntry['1. open'],
+                high: latestEntry['2. high'],
+                low: latestEntry['3. low'],
+                close: latestEntry['4. close'],
+                volume: latestEntry['5. volume'],
+                percentageChange: percentageChange.toFixed(2) // Include the percentage change, formatted to 2 decimal places
+            };
+
+            // Return only the latest data including the percentage change
+            return latestData;
+        } else {
+            console.error("No 'Weekly Time Series' data found or data is empty.");
+            return null;
+        }
     } catch (error) {
         console.error(`Error fetching weekly data from Alpha Vantage for ${symbol}: ${error}`);
         return null;
